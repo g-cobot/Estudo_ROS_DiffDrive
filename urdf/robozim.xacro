@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robozim">
+  <material name="White">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+  <!-- DUMMY LINK -->
+  <link name="base_link"></link>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_link_inertial"/>
+  </joint>
+  
+  <link name="base_link_inertial">  
+    <inertial>
+      <!-- xyz="0.010018459 -0.027907179 0.001156456" -->
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.495" />
+      <inertia
+        ixx="0.005150985"
+        ixy="-9.652998E-06"
+        ixz="-4.661776E-05"
+        iyy="0.004655113"
+        iyz="-0.00029209"
+        izz="0.005549709" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0.001156456 0.010018459 -0.027907179"
+        rpy="0 0 1.57075" />
+      <geometry>
+        <mesh
+          filename="package://robozim/meshes/main_body.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.001156456 0.010018459 0.04"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.125 0.145 0.135"/>
+      </geometry>
+    </collision>
+  </link>
+  <link name="caster_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.062021144" />
+      <inertia
+        ixx="4.424511E-06"
+        ixy="0.00"
+        ixz="0.00"
+        iyy="4.967282E-06"
+        iyz="0.00"
+        izz="4.424511E-06" />
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.008"/>
+      </geometry>
+      <material name="White"/>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.008"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="caster_wheel_joint"
+    type="fixed">
+    <origin
+      xyz="0.001 0.0473 -0.043"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="caster_wheel" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+  <link name="left_wheel">
+    <inertial>
+    <!-- xyz="0.023050097 0.065734305 -0.062511629" -->
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.03190195" />
+      <inertia
+        ixx="5.452149E-06"
+        ixy="-4.677561E-10"
+        ixz="-2.700591E-10"
+        iyy="2.842314E-06"
+        iyz="5.069885E-10"
+        izz="2.841728E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 -1.57075" />
+      <geometry>
+        <mesh
+          filename="package://robozim/meshes/left_wheel.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 1.57075 0" />
+      <geometry>
+          <cylinder length="0.008" radius="0.017"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_wheel_joint"
+    type="continuous">
+    <!-- xyz="0.023050097 0.065734305 -0.062511629" -->
+    <origin
+      xyz="0.07 -0.0425 -0.03276426"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_wheel" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+
+<transmission name="left_wheel_transmission">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="left_wheel_joint">
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="left_wheel_motor"> 
+    <mechanicalReduction>1</mechanicalReduction>
+    <hardwareInterface>VelocityJointInterface</hardwareInterface>
+  </actuator>
+</transmission>
+
+  <link name="right_wheel">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.03190195" />
+      <inertia
+        ixx="5.452149E-06"
+        ixy="-4.677561E-10"
+        ixz="-2.700591E-10"
+        iyy="2.842314E-06"
+        iyz="5.069885E-10"
+        izz="2.841728E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 -1.57075" />
+      <geometry>
+        <mesh
+          filename="package://robozim/meshes/right_wheel.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 1.57075 0" />
+      <geometry>
+          <cylinder length="0.008" radius="0.017"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="-0.07 -0.0425 -0.03276426"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_wheel" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
+
+<transmission name="right_wheel_transmission">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="right_wheel_joint">
+    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="right_wheel_motor"> 
+   <mechanicalReduction>1</mechanicalReduction>
+   <hardwareInterface>VelocityJointInterface</hardwareInterface>
+  </actuator>
+</transmission> 
+<!-- Gazebo plugin for ROS Control -->
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+  </plugin>
+</gazebo>
+<!---->
+</robot>

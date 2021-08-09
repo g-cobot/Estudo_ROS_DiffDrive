@@ -1,0 +1,4 @@
+# The joint state controller handles publishing transforms for any moving joints
+# controller_joint_names: ['', 'left_wheel_joint', 'right_wheel_joint', ]
+type: "joint_state_controller/JointStateController"
+publish_rate: 50
